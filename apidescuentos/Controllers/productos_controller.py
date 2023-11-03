@@ -29,12 +29,12 @@ def listar_productos(current_user):
     # Si el usuario usa el 'search'
     if 'q' in req_data:
         query_value = req_data['q']
-        print(query_value)
-
+         
         # Verificar si el valor es un número con 13 dígitos (posible código de barras)
+        
         if query_value.isdigit() and len(query_value) == 13:
-            filtros['cod_barraspri'] = {"valor": query_value, "tipo": "="}
-
+            filtros['cod_barraspri'] = {"valor": query_value , "tipo": "="}
+           
         # Verificar si el valor es un número con entre 4 y 12 dígitos (posible número de troquel)
         elif query_value.isdigit() and 4 <= len(query_value) < 13:
             filtros['nro_troquel'] = {"valor": query_value, "tipo": "="}
@@ -135,8 +135,8 @@ def download_excel():
         # Enviar el archivo como respuesta para la descarga
         return send_file(output, as_attachment=True, download_name="importar_productos.xlsx", mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
  
-    
-@productos_controller.route('/api/productos/importar', methods=['POST'])
+
+@productos_controller.route('/api/productos/importar', methods=['POST'])    
 def importar_productos():
     if 'file' not in request.files:
         return jsonify({"error": "No file part"}), 400
@@ -155,13 +155,21 @@ def importar_productos():
         # Extraer los datos de la hoja de cálculo
         data = []
         for row in sheet.iter_rows(min_row=2, values_only=True):  # Comienza desde la fila 2 para omitir la cabecera
-            data.append({
-                "cod_barraspri": row[0],
-                "nom_producto": row[1],
-                "repeticion": row[2],
-                "unidades": row[3]
 
-            })
+            #Buscamos el producto en la base de datos y verificamos que exista
+            unProducto = DAOProductos.obtenerProductoPorCodBarras(row[0]) 
+            
+            if unProducto is not None:
+            
+                data.append({
+                    "cod_alfabeta": unProducto.cod_alfabeta,
+                    "cod_barraspri": unProducto.cod_barraspri,
+                    "nro_troquel": unProducto.nro_troquel,
+                    "nombre": unProducto.nom_largo,
+                    "repeticion": row[2],
+                    "cantidad": row[3]
+
+                })
 
         # Devolver los datos leídos en formato JSON
         return apiresponse(True,'Los datos se importaron correctamente',data,200)

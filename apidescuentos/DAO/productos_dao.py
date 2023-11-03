@@ -18,24 +18,39 @@ class ProductoDAO(BaseDAO):
         for campo, fieldValue in filtros.items():
             if campo != 'search':
                 fieldName = getattr(Producto, campo)
+               
                 # Si no existe la clave tipo o es igual, filtramos por where simple    
-                if fieldValue.get('tipo') == '=' or 'tipo' not in fieldValue:
-                    query = query.where(fieldName == fieldValue['valor'])
+                # Ensure we're casting the value to match the column type
+                if 'cod_barraspri' == campo:
+                     query = query.where(Producto.cod_barraspri.contains(fieldValue['valor']))
+                     print('okas test')
                 else:
-                    query = query.where(fieldName.contains(fieldValue['valor']))    
-            else: 
-                # Búsqueda por 'search' en cod_planos o nom_planos usando 'OR'
-                query = query.where(
-                    (Producto.nom_largo.contains(fieldValue['valor']))  
-                     
-                )
+                    query = query.where(fieldName == fieldValue['valor'])
 
+<<<<<<< Updated upstream
         # Ordenar por 'nom_largo'
         query = query.where(fn.TRIM( Producto.nom_largo) != '').order_by(Producto.nom_largo)
+=======
+                # Ordenar por 'nom_largo'
+                query = query.where(fn.TRIM( Producto.nom_largo) != '').order_by(Producto.nom_largo)
+>>>>>>> Stashed changes
        
         # Paginación de los resultados
         return ProductoDAO.paginated(query, ProductoDTO)
     
+<<<<<<< Updated upstream
+=======
+    def obtenerProductoPorCodBarras(self,cod_barraspri) -> Producto:
+       return (Producto.get(Producto.cod_barraspri== cod_barraspri))
+    
+    
+    def obtenerProductoPorTroquel(self,nro_troquel) -> Producto:
+       return (Producto.get(Producto.nro_troquel== nro_troquel))
+    
+    
+    
+    
+>>>>>>> Stashed changes
     def getCantProductosConDescuento(self): 
         query = (Producto.select(Producto.cod_alfabeta,Producto.nom_largo).join(DescuentoDetalle, on =(Producto.cod_alfabeta == DescuentoDetalle.cod_alfabeta))
             .join(DescuentoEsquema, on=(DescuentoEsquema.descuento_esquema_id == DescuentoDetalle.descuento_esquema_id))
@@ -45,4 +60,15 @@ class ProductoDAO(BaseDAO):
         
         return query.count()           
  
+<<<<<<< Updated upstream
  
+=======
+ 
+    def getCantProductosRegistrados(self):
+        query = (Producto.select(Producto.cod_alfabeta,Producto.nom_largo).join(DescuentoDetalle, on =(Producto.cod_alfabeta == DescuentoDetalle.cod_alfabeta))
+            .join(DescuentoEsquema, on=(DescuentoEsquema.descuento_esquema_id == DescuentoDetalle.descuento_esquema_id))
+        
+        )
+        
+        return query.count() 
+>>>>>>> Stashed changes
