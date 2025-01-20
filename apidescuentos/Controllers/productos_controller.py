@@ -35,16 +35,9 @@ def listar_productos(current_user):
             filtros['nro_troquel'] = {"valor": query_value, "tipo": "="}
 
         # Si no es un número, es una búsqueda general
-    else:
-        filtros['search'] = {"valor": query_value, "tipo": "LIKE"}
-
-        # Si el usuario filtra por 'nro_troquel'
-        if 'nro_troquel' in req_data:
-            filtros['nro_troquel'] = {"valor": req_data['nro_troquel'], "tipo": "="}
-
-        # Si el usuario filtra por 'c_barras'
-        if 'c_barras' in req_data:
-            filtros['cod_barraspri'] = {"valor": req_data['c_barras'], "tipo": "="}
+        else:
+            filtros['search'] = {"valor": query_value, "tipo": "LIKE"}
+ 
 
         # Ejecutar la consulta con los filtros aplicados
     

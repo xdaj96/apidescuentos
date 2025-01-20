@@ -29,6 +29,8 @@ def apiresponse(status, message: str = 'La peticion se completo correctamente', 
             "perPage":data['per_page'],
             "page":page
         }
+        
+        
     else: 
         response = {
             "status":status,

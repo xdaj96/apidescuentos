@@ -7,6 +7,7 @@ from Controllers.descuento_Controller import descuento_controller
 from Controllers.planes_os_controller import planes_os_controller
 from Controllers.productos_controller import productos_controller
 from Controllers.rubro_controller import rubro_controller
+from Controllers.components_data import componentsdata_controller
 controladores = [
     usuario_controller,
     auth_controller,
@@ -14,7 +15,8 @@ controladores = [
     descuento_controller,
     planes_os_controller,
     productos_controller,
-    rubro_controller
+    rubro_controller,
+    componentsdata_controller
 ] 
  
  

@@ -3,7 +3,7 @@ from Models.sucursal_model import Sucursal
 from typing import List,Optional
 from apidescuentos.DAO.base_dao import BaseDAO
 from DTOs.DescuentoDTO import DescuentoEsquemaDTO
-
+from datetime import datetime
 from flask import request
 import peewee
 class DescuentoDAO(BaseDAO):
@@ -62,3 +62,19 @@ class DescuentoDAO(BaseDAO):
         unDescuento.cupon = esquemaDesc['cupon']
         unDescuento.save()
         return unDescuento
+    
+   
+    
+    def get_cant_descuentos_vigentes(self) ->int:
+        fecha_actual = datetime.now()
+        query = DescuentoEsquema.select().where((DescuentoEsquema.fecha_vig_inicio <= fecha_actual) &
+                (DescuentoEsquema.fecha_vig_fin >= fecha_actual))
+        return query.count()
+    
+    def get_cant_descuentos_inactivos(self) ->int:
+        fecha_actual = datetime.now()
+        query = DescuentoEsquema.select().where(not((DescuentoEsquema.fecha_vig_inicio <= fecha_actual) &
+                (DescuentoEsquema.fecha_vig_fin >= fecha_actual)))
+        return query.count()
+    
+        
