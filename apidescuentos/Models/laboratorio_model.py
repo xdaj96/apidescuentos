@@ -7,12 +7,8 @@ class Laboratorio(Model):
     
     class Meta:
         database = db
-<<<<<<< Updated upstream
-        table_name='prmalaboratorio'
-=======
-        table_name='prmalaboratorio' 
->>>>>>> Stashed changes
-    
+        tablename='prmalaboratorio'
+ 
     def to_dict(self):
         return {
             "cod_laboratorio":self.cod_laboratorio,
