@@ -23,16 +23,3 @@ dbAutodw = PostgresqlDatabase(
     host= os.getenv('HOST_DW'),
     port=5432
 )
-
-<<<<<<< Updated upstream
-=======
-# Base de datos para pruebas
-dbComprasDesarrollo = PostgresqlDatabase(
-     os.getenv('DB_COMPRAS'),
-    user= os.getenv('DB_COMPRAS'),
-    password= os.getenv('DB_COMPRAS'),
-    host=os.getenv('HOST_COMPRAS_DEVELOP'),
-    port=5432
-)
-
->>>>>>> Stashed changes
