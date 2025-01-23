@@ -7,8 +7,8 @@ class Laboratorio(Model):
     
     class Meta:
         database = db
-        table_name='prmalaboratorio'
-    
+        tablename='prmalaboratorio'
+ 
     def to_dict(self):
         return {
             "cod_laboratorio":self.cod_laboratorio,
