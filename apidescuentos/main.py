@@ -6,11 +6,14 @@ from flask_cors import CORS,cross_origin
  
 app = Flask(__name__)
 
+
+app.config['CORS_HEADERS'] = 'Content-Type'
+CORS(app, origins=["http://localhost:4200"])  # Permite solicitudes solo desde este origen
+
 # inicializamos las rutas de la api 
 initialize_routes(app)
 
-cors = CORS(app,origins='*') # allow CORS for all domains on all routes.
-app.config['CORS_HEADERS'] = 'Content-Type'
+
 
 if __name__ == '__main__':
     app.run(debug=True)

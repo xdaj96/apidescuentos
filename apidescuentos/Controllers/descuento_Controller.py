@@ -60,14 +60,28 @@ def registrar_descuento(current_user):
         # Registramos el descuento en la base de datos
         DAODescuento.iniciarTransaccion()
         unDescuento = DAODescuento.registrarEsquemaDescuento(esquemaDesc=data)
+        dictDescuento = unDescuento.to_dict()
+        detalle = []
+        # Registramos el detalle del descuento 
+        for renglon in data['detalle']:
+          
+            renglon['descuento_esquema_id'] = dictDescuento['descuento_esquema_id']  
+            renglon['porcentaje_descuento'] = dictDescuento['monto_porcentaje']
+            print(renglon)
+
+            detalle.append(DAODetaDescuento.registrarLineaDescuento(renglon))    
+      
         DAODescuento.commit()
-        return apiresponse(True,'El descuento se registro correctamente',unDescuento.to_dict())     
+        dictDescuento['detalle'] = [unRenglon.to_dict() for unRenglon in detalle]    
+        
+        return apiresponse(True,'El descuento se registro correctamente',dictDescuento)     
         
         
     except ValidationError as err:
-        return apiresponse(False,err.messages,[])
+        return apiresponse(False,err.messages,[],500)
    
     except Exception as e:
         DAODescuento.rollback()
+        print(e)
         return apiresponse(False,'La peticion no se pudo completar',[],500)
     

@@ -8,6 +8,7 @@ class String(fields.String):
 
 
 class DescuentoValidationEsquema(Schema):
+    descuento_esquema_id = fields.Int(required = False)
     nombre = String(min=3, required=True, error_messages={'Length':'La longitud del capo debe ser mayor'})  # Valida que el nombre tenga al menos 3 caracteres
     fecha_vig_inicio = fields.Date(required=True)
     fecha_vig_fin = fields.Date(required=True)
@@ -16,7 +17,8 @@ class DescuentoValidationEsquema(Schema):
     monto_porcentaje = fields.Float(required=True)
     dias_semana = String(required=True)
     cupon = String(required=True)
-    detalle = fields.List(fields.Nested(DetalleDescuentoValidationSchema),required=True)
+    detalle = fields.List(fields.Nested(DetalleDescuentoValidationSchema),required=False)
+    unidades = fields.Int(required=True)
 
 
     @validates('tipo')

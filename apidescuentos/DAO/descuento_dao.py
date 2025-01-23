@@ -50,20 +50,25 @@ class DescuentoDAO(BaseDAO):
         return DescuentoDAO.paginated(query, DescuentoEsquemaDTO)
          
     def registrarEsquemaDescuento(self,esquemaDesc):
-        unDescuento = DescuentoEsquema()
-        unDescuento.descuento_esquema_id = self.get_nro_descuento()
-        unDescuento.nombre = esquemaDesc['nombre']
-        unDescuento.fecha_vig_inicio = esquemaDesc['fecha_vig_inicio']
-        unDescuento.fecha_vig_fin = esquemaDesc['fecha_vig_fin']
-        unDescuento.tipo = esquemaDesc['tipo']
-        unDescuento.monto_porcentaje = esquemaDesc['monto_porcentaje']
-        unDescuento.sucursal_id = esquemaDesc['sucursal_id']
-        unDescuento.dias_semana = esquemaDesc['dias_semana']
-        unDescuento.cupon = esquemaDesc['cupon']
-        unDescuento.save()
-        return unDescuento
-    
-   
+           # Si el descuento no existe, insertamos directamente
+        unDescuento_id = self.get_nro_descuento()
+
+        # Usamos el método insert para realizar el insert
+        nuevo_descuento = DescuentoEsquema.insert(
+            descuento_esquema_id=unDescuento_id,
+            nombre=esquemaDesc['nombre'],
+            fecha_vig_inicio=esquemaDesc['fecha_vig_inicio'],
+            fecha_vig_fin=esquemaDesc['fecha_vig_fin'],
+            tipo=esquemaDesc['tipo'],
+            monto_porcentaje=esquemaDesc['monto_porcentaje'],
+            sucursal_id=esquemaDesc['sucursal_id'],
+            dias_semana=esquemaDesc['dias_semana'],
+            cupon=esquemaDesc['cupon']
+        ).execute()
+
+        # Una vez insertado, puedes recuperar el objeto con ese ID
+        return DescuentoEsquema.get(DescuentoEsquema.descuento_esquema_id == unDescuento_id)
+
     
     def get_cant_descuentos_vigentes(self) ->int:
         fecha_actual = datetime.now()

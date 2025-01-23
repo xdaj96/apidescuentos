@@ -1,7 +1,7 @@
 from Models.descuento_model import DescuentoEsquema
 from Models.detadescuento_model import DescuentoDetalle
 from Models.plan_os_model import PlanOS
-from Models.sucursal_model import Sucursal
+from Models.sucursal_model import Sucursal,db
 from Models.producto_model import Producto
 from typing import List,Optional
 from apidescuentos.DAO.base_dao import BaseDAO
@@ -42,6 +42,10 @@ class DetaDescuentoDAO(BaseDAO):
          .where(DescuentoDetalle.descuento_esquema_id == id_descuento))  # Filtro adicional
 
         return query
+    def get_nro_detalle(self)->int:
+        return db.execute_sql("SELECT nextval('descuento_detalle_descuento_detalle_id_seq');").fetchone()[0]
+
+
     
     def registrarLineaDescuento(self,lineaDescuento):
         """
@@ -51,14 +55,17 @@ class DetaDescuentoDAO(BaseDAO):
         Args:
             lineaDescuento (LineaDescuento): Diccionario con los  datos que se deben insertar
         """
-        unaLineaDescuento = DescuentoDetalle()
-        unaLineaDescuento.descuento_esquema_id = lineaDescuento['descuento_esquema_id']
-        unaLineaDescuento.descuento_detalle_id = lineaDescuento['descuento_detalle_id']
-        unaLineaDescuento.cod_planos = lineaDescuento['descuento_esquema_id']
-        unaLineaDescuento.cod_laboratorio = lineaDescuento['descuento_esquema_id']
-        unaLineaDescuento.cod_rubro = lineaDescuento['descuento_esquema_id']
-        unaLineaDescuento.cod_alfabeta = lineaDescuento['cod_alfabeta']
-        unaLineaDescuento.porcentaje_descuento = lineaDescuento['porcentaje_descuento']
-        unaLineaDescuento.tipo = lineaDescuento['tipo']
-        unaLineaDescuento.importe_fijo = lineaDescuento['importe_fijo']    
-        unaLineaDescuento.save()
+        unaLineaDescuentoId = self.get_nro_detalle()
+        unaLineaDescuento = DescuentoDetalle().insert(
+            descuento_esquema_id = lineaDescuento['descuento_esquema_id'],
+            descuento_detalle_id = unaLineaDescuentoId,
+            cod_planos = lineaDescuento['cod_planos'],
+            cod_laboratorio = lineaDescuento['cod_laboratorio'],
+            cod_rubro = lineaDescuento['cod_rubro'],
+            cod_alfabeta = lineaDescuento['cod_alfabeta'],
+            sucursal_id = lineaDescuento['sucursal_id'],
+            porcentaje_descuento = lineaDescuento['porcentaje_descuento'],
+            tipo = lineaDescuento['tipo'],
+            importe_fijo = 0   
+        ).execute()
+        return DescuentoDetalle.get(DescuentoDetalle.descuento_detalle_id== unaLineaDescuentoId)
