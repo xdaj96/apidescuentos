@@ -18,3 +18,11 @@ dbAutodw = PostgresqlDatabase(
     port=5432
 )
 
+# Base de datos para pruebas
+dbComprasDesarrollo = PostgresqlDatabase(
+    'compras',
+    user='compras',
+    password='compras',
+    host='192.168.201.12',
+    port=5432
+)
