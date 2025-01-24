@@ -1,11 +1,13 @@
 from Models.producto_model import Producto,db 
 from Models.rubro_model import Rubro
+from Models.detadescuento_model import DescuentoDetalle
+from Models.descuento_model import DescuentoEsquema
 from typing import List,Optional
 from apidescuentos.DAO.base_dao import BaseDAO
 from DTOs.productos_dto import ProductoDTO
 
 from flask import request
-import peewee
+from peewee import fn
 
 class ProductoDAO(BaseDAO):
     
@@ -29,7 +31,18 @@ class ProductoDAO(BaseDAO):
                 )
 
         # Ordenar por 'nom_largo'
-        query = query.where(peewee.fn.TRIM( Producto.nom_largo) != '').order_by(Producto.nom_largo)
+        query = query.where(fn.TRIM( Producto.nom_largo) != '').order_by(Producto.nom_largo)
        
         # Paginación de los resultados
         return ProductoDAO.paginated(query, ProductoDTO)
+    
+    def getCantProductosConDescuento(self): 
+        query = (Producto.select(Producto.cod_alfabeta,Producto.nom_largo).join(DescuentoDetalle, on =(Producto.cod_alfabeta == DescuentoDetalle.cod_alfabeta))
+            .join(DescuentoEsquema, on=(DescuentoEsquema.descuento_esquema_id == DescuentoDetalle.descuento_esquema_id))
+            .where((fn.NOW() >= DescuentoEsquema.fecha_vig_inicio) & (fn.NOW() <= DescuentoEsquema.fecha_vig_fin))
+
+        )
+        
+        return query.count()           
+ 
+ 
