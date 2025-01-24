@@ -8,6 +8,7 @@ load_dotenv()
 
 # Inicializamos la variable global de la base de datos, pero no la conectamos todavía
 # Configuración de la base de datos PostgreSQL
+ 
 db = PostgresqlDatabase(
     os.getenv('DB_COMPRAS'),
     user=os.getenv('DB_COMPRAS_USER'),
