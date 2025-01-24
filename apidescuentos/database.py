@@ -23,15 +23,3 @@ dbAutodw = PostgresqlDatabase(
     host= os.getenv('HOST_DW'),
     port=5432
 )
-<<<<<<< HEAD
-
-# Base de datos para pruebas
-dbComprasDesarrollo = PostgresqlDatabase(
-    'compras',
-    user='compras',
-    password='compras',
-    host='192.168.201.12',
-    port=5432
-)
-=======
->>>>>>> main
