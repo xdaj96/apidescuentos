@@ -54,9 +54,9 @@ def get_sucursales_con_descuentos(current_user):
 @token_requerido
 def get_productos_en_descuento(current_user):
     productosConDescuento = DAOProducto.getCantProductosConDescuento()
-    
+    productosRegistrados = DAOProducto.getCantProductosRegistrados()
     return apiresponse(status=True,data={"productos_con_descuento":productosConDescuento,
-                                         "total_productos":0})    
+                                         "total_productos":productosRegistrados})    
  
     
         

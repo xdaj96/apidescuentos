@@ -66,6 +66,7 @@ class DetaDescuentoDAO(BaseDAO):
             sucursal_id = lineaDescuento['sucursal_id'],
             porcentaje_descuento = lineaDescuento['porcentaje_descuento'],
             tipo = lineaDescuento['tipo'],
+            cantidad = int(lineaDescuento['cantidad']),
             importe_fijo = 0   
         ).execute()
         return DescuentoDetalle.get(DescuentoDetalle.descuento_detalle_id== unaLineaDescuentoId)

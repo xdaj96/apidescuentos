@@ -62,12 +62,13 @@ def registrar_descuento(current_user):
         unDescuento = DAODescuento.registrarEsquemaDescuento(esquemaDesc=data)
         dictDescuento = unDescuento.to_dict()
         detalle = []
+        print(data)
         # Registramos el detalle del descuento 
         for renglon in data['detalle']:
           
             renglon['descuento_esquema_id'] = dictDescuento['descuento_esquema_id']  
             renglon['porcentaje_descuento'] = dictDescuento['monto_porcentaje']
-            print(renglon)
+             
 
             detalle.append(DAODetaDescuento.registrarLineaDescuento(renglon))    
       
@@ -85,3 +86,15 @@ def registrar_descuento(current_user):
         print(e)
         return apiresponse(False,'La peticion no se pudo completar',[],500)
     
+@descuento_controller.route('/api/descuentos/<int:descuento_esquema_id>',methods=['DELETE'])
+@token_requerido
+def eliminar_descuento(descuento_esquema_id,current_user):
+    unDescuento = DAODescuento.getDescuentoPorId(descuento_esquema_id).to_dict()
+    
+    if unDescuento is None: 
+        return apiresponse(status=False,data={},message='El descuento no existe')
+     
+    if DAODescuento.eliminar_descuento(descuento_esquema_id):
+        return apiresponse(status=True,data=unDescuento,message='El descuento se elimino correctamente')
+
+    return apiresponse(status=False,data=unDescuento,message='no se pudo eliminar el descuento')

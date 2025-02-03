@@ -44,7 +44,7 @@ class DescuentoDAO(BaseDAO):
             else:
                 query = query.where(fieldName.contains(fieldValue['valor']))    
                     
-        query = query.order_by(DescuentoEsquema.fecha_vig_inicio)  # Seleccionamos las sucursales y los ordenamos por nro de sucursal
+        query = query.order_by(DescuentoEsquema.descuento_esquema_id.desc())  # Seleccionamos las sucursales y los ordenamos por nro de sucursal
         
         
         return DescuentoDAO.paginated(query, DescuentoEsquemaDTO)
@@ -82,4 +82,10 @@ class DescuentoDAO(BaseDAO):
                 (DescuentoEsquema.fecha_vig_fin >= fecha_actual)))
         return query.count()
     
+    def eliminar_descuento(self,descuento_esquema_id):
+        unDescuento = self.getDescuentoPorId(descuento_esquema_id)
         
+        if not(unDescuento is None):
+            unDescuento.delete_instance()   
+            return True 
+        return False

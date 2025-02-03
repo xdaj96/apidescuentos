@@ -6,7 +6,7 @@ class Paginator:
         self.query = query
         self.dto_class = dto_class or BaseDTO  # Aquí pasamos el DTO dinámicamente
         self.page = int(request.args.get('page', 1))  # Página por defecto es 1
-        self.per_page = int(request.args.get('limit', 20))  # Resultados por página por defecto 20
+        self.per_page = int(request.args.get('limit', 30))  # Resultados por página por defecto 20
 
 
     def paginate(self):

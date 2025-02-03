@@ -29,12 +29,12 @@ def listar_productos(current_user):
     # Si el usuario usa el 'search'
     if 'q' in req_data:
         query_value = req_data['q']
-        print(query_value)
-
+         
         # Verificar si el valor es un número con 13 dígitos (posible código de barras)
+        
         if query_value.isdigit() and len(query_value) == 13:
-            filtros['cod_barraspri'] = {"valor": query_value, "tipo": "="}
-
+            filtros['cod_barraspri'] = {"valor": query_value , "tipo": "="}
+           
         # Verificar si el valor es un número con entre 4 y 12 dígitos (posible número de troquel)
         elif query_value.isdigit() and 4 <= len(query_value) < 13:
             filtros['nro_troquel'] = {"valor": query_value, "tipo": "="}

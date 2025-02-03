@@ -14,7 +14,7 @@ class DescuentoEsquema(Model):
     dias_semana = TextField()
     cupon = TextField()    
     sucursal_id = ForeignKeyField(Sucursal,backref='descuento_esquema', to_field='sucursal_id')
-    
+    created_at = DateField()
     
     
     
