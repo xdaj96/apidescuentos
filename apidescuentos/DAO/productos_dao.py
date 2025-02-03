@@ -33,6 +33,16 @@ class ProductoDAO(BaseDAO):
         # Paginación de los resultados
         return ProductoDAO.paginated(query, ProductoDTO)
     
+    def obtenerProductoPorCodBarras(self,cod_barraspri) -> Producto:
+       return (Producto.get(Producto.cod_barraspri== cod_barraspri))
+    
+    
+    def obtenerProductoPorTroquel(self,nro_troquel) -> Producto:
+       return (Producto.get(Producto.nro_troquel== nro_troquel))
+    
+    
+    
+    
     def getCantProductosConDescuento(self): 
         query = (Producto.select(Producto.cod_alfabeta,Producto.nom_largo).join(DescuentoDetalle, on =(Producto.cod_alfabeta == DescuentoDetalle.cod_alfabeta))
             .join(DescuentoEsquema, on=(DescuentoEsquema.descuento_esquema_id == DescuentoDetalle.descuento_esquema_id))
