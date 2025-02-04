@@ -60,9 +60,7 @@ class ProductoDAO(BaseDAO):
         
         return query.count()           
  
-<<<<<<< Updated upstream
  
-=======
  
     def getCantProductosRegistrados(self):
         query = (Producto.select(Producto.cod_alfabeta,Producto.nom_largo).join(DescuentoDetalle, on =(Producto.cod_alfabeta == DescuentoDetalle.cod_alfabeta))
@@ -71,4 +69,3 @@ class ProductoDAO(BaseDAO):
         )
         
         return query.count() 
->>>>>>> Stashed changes
